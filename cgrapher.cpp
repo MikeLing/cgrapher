@@ -8,11 +8,10 @@
 
 namespace
 {
-    FunctionsCollector::FunctionsCollector(clang::CompilerInstance & __CI, const std::string & __root, const std::string & __lock, const std::string & __out) : CI(__CI), root(__root), lock(__lock), out(__out) { }
+    FunctionsCollector::FunctionsCollector(clang::CompilerInstance & __CI, const std::string & __root, const std::string & __lock, const std::string & __out) : CI(__CI), root(__root), lock(__lock), out(__out) {}
 
     void FunctionsCollector::getCaller(clang::FunctionDecl * decl)
     {
-        std::cout << "ok" << std::endl;
         if (decl->isThisDeclarationADefinition() && !decl->isDeleted())
         {
             std::string s;
@@ -36,8 +35,7 @@ namespace
                 out << parameter->getOriginalType().getAsString(policy);
             }
             out << ')';
-            std::cout << "It comes to here";
-            std::cout << out.str();
+            
             // we just init a mapping here, the callee's name will be push into vector in handleCallExpr
             std::vector<std::string> calleenames;
             result[out.str()] = calleenames;
@@ -69,17 +67,15 @@ namespace
         }
     }
 
-    bool FunctionsCollector::visitFunctionDecl(clang::FunctionDecl * decl)
+    bool FunctionsCollector::VisitFunctionDecl(clang::FunctionDecl * decl)
     {
-        std::cout << "the function decl is running";
         getCaller(decl);
 
         return true;
     }
 
-    bool FunctionsCollector::visitCallExpr(clang::CallExpr * callexpr)
+    bool FunctionsCollector::VisitCallExpr(clang::CallExpr * callexpr)
     {
-        std::cout << "the call expr is running";
         handleCallExpr(callexpr);
 
         return true;

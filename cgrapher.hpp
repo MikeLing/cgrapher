@@ -34,8 +34,8 @@ namespace
 
             // Visit the callee node and return its name
             void handleCallExpr(clang::CallExpr * callexpr);
-            bool visitFunctionDecl(clang::FunctionDecl * decl);
-            bool visitCallExpr(clang::CallExpr * callexpr);
+            bool VisitFunctionDecl(clang::FunctionDecl * decl);
+            bool VisitCallExpr(clang::CallExpr * callexpr);
             void push_info();
             void print_info(std::ostream & os);
 
