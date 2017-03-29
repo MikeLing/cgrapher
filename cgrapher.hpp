@@ -25,7 +25,7 @@ namespace
         clang::CallGraph visitor;
 
         public:
-            GraphGeneratorConsume(clang::CompilerInstance & __CI, const std::string & root, const std::string & lock, const std::string & out);
+            GraphGeneratorConsume(clang::CompilerInstance & __CI);
             virtual ~GraphGeneratorConsume();
 
             virtual void HandleTranslationUnit(clang::ASTContext & ctxt);
@@ -34,10 +34,6 @@ namespace
 
     class GraphGeneratoAction : public clang::PluginASTAction
     {
-        std::string root;
-        std::string lock;
-        std::string out;
-
         protected:
             std::unique_ptr<clang::ASTConsumer> CreateASTConsumer(clang::CompilerInstance &CI, llvm::StringRef) override;
             bool ParseArgs(const clang::CompilerInstance & CI, const std::vector<std::string> & args) override;

@@ -8,7 +8,7 @@
 
 namespace
 {
-    GraphGeneratorConsume::GraphGeneratorConsume(clang::CompilerInstance & __CI, const std::string & root, const std::string & lock, const std::string & out) : 
+    GraphGeneratorConsume::GraphGeneratorConsume(clang::CompilerInstance & __CI) : 
             clang::ASTConsumer(), CI(__CI) { }
     
     GraphGeneratorConsume::~GraphGeneratorConsume() { }
@@ -26,7 +26,7 @@ namespace
 
     std::unique_ptr<clang::ASTConsumer> GraphGeneratoAction::CreateASTConsumer(clang::CompilerInstance &CI, llvm::StringRef)
     {
-        return llvm::make_unique<GraphGeneratorConsume>(CI, root, lock, out);
+        return llvm::make_unique<GraphGeneratorConsume>(CI);
     }
 
     bool GraphGeneratoAction::ParseArgs(const clang::CompilerInstance & CI, const std::vector<std::string> & args)
