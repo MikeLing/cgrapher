@@ -18,11 +18,17 @@
 
 namespace
 {
+    class GraphGenerator : public CallGraph
+    {
+        public:
+            GraphGenerator():CallGraph(){};
+            ~GraphGenerator();
+    }
 
     class GraphGeneratorConsume : public clang::ASTConsumer
     {
         clang::CompilerInstance & CI;
-        clang::CallGraph visitor;
+        GraphGenerator visitor;
 
         public:
             GraphGeneratorConsume(clang::CompilerInstance & __CI);
