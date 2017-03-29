@@ -8,27 +8,28 @@
 
 namespace
 {
-    FunctionsCollectorConsumer::FunctionsCollectorConsumer(clang::CompilerInstance & __CI, const std::string & root, const std::string & lock, const std::string & out) : clang::ASTConsumer(), CI(__CI), visitor(__CI, root, lock, out) { }
+    GraphGeneratorConsume::GraphGeneratorConsume(clang::CompilerInstance & __CI, const std::string & root, const std::string & lock, const std::string & out) : 
+            clang::ASTConsumer(), CI(__CI) { }
     
-    FunctionsCollectorConsumer::~FunctionsCollectorConsumer() { }
+    GraphGeneratorConsume::~GraphGeneratorConsume() { }
 
-    void FunctionsCollectorConsumer::HandleTranslationUnit(clang::ASTContext & ctxt)
+    void GraphGeneratorConsume::HandleTranslationUnit(clang::ASTContext & ctxt)
     {
         visitor.TraverseDecl(ctxt.getTranslationUnitDecl());
         visitor.dump();
     }
 
-    bool FunctionsCollectorConsumer::shouldSkipFunctionBody(clang::Decl * decl)
+    bool GraphGeneratorConsume::shouldSkipFunctionBody(clang::Decl * decl)
     {
         return false;
     }
 
-    std::unique_ptr<clang::ASTConsumer> FunctionsCollectorAction::CreateASTConsumer(clang::CompilerInstance &CI, llvm::StringRef)
+    std::unique_ptr<clang::ASTConsumer> GraphGeneratoAction::CreateASTConsumer(clang::CompilerInstance &CI, llvm::StringRef)
     {
-        return llvm::make_unique<FunctionsCollectorConsumer>(CI, root, lock, out);
+        return llvm::make_unique<GraphGeneratorConsume>(CI, root, lock, out);
     }
 
-    bool FunctionsCollectorAction::ParseArgs(const clang::CompilerInstance & CI, const std::vector<std::string> & args)
+    bool GraphGeneratoAction::ParseArgs(const clang::CompilerInstance & CI, const std::vector<std::string> & args)
     {
         if (args.size() >= 1)
         {
@@ -47,11 +48,11 @@ namespace
     }
 
         // Automatically run the plugin after the main AST action
-        clang::PluginASTAction::ActionType FunctionsCollectorAction::getActionType()
+        clang::PluginASTAction::ActionType GraphGeneratoAction::getActionType()
         {
             return AddAfterMainAction;
         }
         
-        static clang::FrontendPluginRegistry::Add<FunctionsCollectorAction> X("cgrapher", "get a call graph");
+        static clang::FrontendPluginRegistry::Add<GraphGeneratoAction> X("cgrapher", "get a call graph");
 }
 

@@ -19,20 +19,20 @@
 namespace
 {
 
-    class FunctionsCollectorConsumer : public clang::ASTConsumer
+    class GraphGeneratorConsume : public clang::ASTConsumer
     {
         clang::CompilerInstance & CI;
         clang::CallGraph visitor;
 
         public:
-            FunctionsCollectorConsumer(clang::CompilerInstance & __CI, const std::string & root, const std::string & lock, const std::string & out);
-            virtual ~FunctionsCollectorConsumer();
+            GraphGeneratorConsume(clang::CompilerInstance & __CI, const std::string & root, const std::string & lock, const std::string & out);
+            virtual ~GraphGeneratorConsume();
 
             virtual void HandleTranslationUnit(clang::ASTContext & ctxt);
             virtual bool shouldSkipFunctionBody(clang::Decl * decl);
     };
 
-    class FunctionsCollectorAction : public clang::PluginASTAction
+    class GraphGeneratoAction : public clang::PluginASTAction
     {
         std::string root;
         std::string lock;
