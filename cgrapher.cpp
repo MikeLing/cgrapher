@@ -31,19 +31,6 @@ namespace
 
     bool GraphGeneratoAction::ParseArgs(const clang::CompilerInstance & CI, const std::vector<std::string> & args)
     {
-        if (args.size() >= 1)
-        {
-            root = args[0];
-            if (args.size() >= 2)
-            {
-                out = args[1];
-                if (args.size() >= 3)
-                {
-                    lock = args[2];
-                }
-            }
-        }
-        
         return true;
     }
 
