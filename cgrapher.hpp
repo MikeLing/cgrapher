@@ -14,37 +14,15 @@
 #include "clang/Sema/Sema.h"
 #include "llvm/Support/raw_ostream.h"
 
+#include "clang/Analysis/CallGraph.h"
+
 namespace
 {
-    class FunctionsCollector : public clang::RecursiveASTVisitor<FunctionsCollector>
-    {
-        clang::CompilerInstance & CI;
-        const std::string root;
-        const std::string lock;
-        const std::string out;
-
-        // the  output like assumen like "callername->calleename | file | line number"
-        std::map<std::string, std::vector<std::string>> result;
-
-        public:
-            FunctionsCollector(clang::CompilerInstance &_CI, const std::string & __root, const std::string & __lock, const std::string & __out);
-            
-            // Get caller's infomation
-            void getCaller(clang::FunctionDecl * decl);
-
-            // Visit the callee node and return its name
-            void handleCallExpr(clang::CallExpr * callexpr);
-            bool VisitFunctionDecl(clang::FunctionDecl * decl);
-            bool VisitCallExpr(clang::CallExpr * callexpr);
-            void push_info();
-            void print_info(std::ostream & os);
-
-    };
 
     class FunctionsCollectorConsumer : public clang::ASTConsumer
     {
         clang::CompilerInstance & CI;
-        FunctionsCollector visitor;
+        clang::CallGraph visitor;
 
         public:
             FunctionsCollectorConsumer(clang::CompilerInstance & __CI, const std::string & root, const std::string & lock, const std::string & out);
